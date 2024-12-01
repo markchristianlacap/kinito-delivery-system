@@ -1,0 +1,157 @@
+<script setup lang="ts">
+const route = useRoute()
+const $q = useQuasar()
+const id = route.params.id
+const deliveryStatus = useDeliveryStatus()
+const clipboard = useClipboard()
+const delivery = useRequest(() => api.get(`/deliveries/${id}`).then(r => r.data))
+function copyTrackingNumber() {
+  clipboard.copy(delivery.response.trackingNumber)
+  $q.notify({
+    color: 'primary',
+    message: 'Tracking Number Copied to clipboard',
+  })
+}
+function copyReferenceNumber() {
+  clipboard.copy(delivery.response.referenceNumber)
+  $q.notify({
+    color: 'primary',
+    message: 'Reference Number Copied to clipboard',
+  })
+}
+onMounted(() => delivery.submit())
+</script>
+
+<template>
+  <q-page>
+    <q-card flat bordered class="q-pa-md">
+      <q-card-section>
+        <div class="flex items-center justify-between">
+          <p class="text-h6">
+            <q-btn flat dense to="/deliveries/" color="primary" icon="arrow_back" />
+            Delivery Details
+          </p>
+        </div>
+        <div v-if="delivery.response">
+          <p class="text-lg">
+            Reference Number
+            <span>
+              <q-btn
+                no-caps
+                dense
+                flat
+                icon-right="content_copy"
+                :label="delivery.response.referenceNumber"
+                color="primary"
+                @click="copyReferenceNumber()"
+              />
+            </span>
+          </p>
+          <barcode :code="delivery.response.referenceNumber" />
+          <q-list separator padding>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Tracking Number
+                </q-item-label>
+                <q-item-label class="text-bold text-primary">
+                  <q-btn no-caps dense flat icon-right="content_copy" :label="delivery.response.trackingNumber" @click="copyTrackingNumber()" />
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Arrival Date
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ formatDate(delivery.response.date) }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Recipient
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ delivery.response.recipientName }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Amount
+                </q-item-label>
+                <q-item-label class="text-bold text-secondary text-xl">
+                  {{ formatAmount(delivery.response.amount) }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Contact Number
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ delivery.response.contactNumber }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Address
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ delivery.response.address }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Package Type
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ delivery.response.packageTypeDesc }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Size
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ delivery.response.sizeDesc }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Status
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  <q-badge :color="deliveryStatus.getColor(delivery.response.deliveryStatus)" :label="delivery.response.deliveryStatusDesc" />
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>
+                  Created At
+                </q-item-label>
+                <q-item-label class="text-bold">
+                  {{ formatDate(delivery.response.createdAt) }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-page>
+</template>

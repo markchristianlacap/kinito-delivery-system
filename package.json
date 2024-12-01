@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "workspaces": [
+    "client/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter client dev",
+    "watch": "dotnet watch --project backend --no-hot-reload"
+  }
+}
