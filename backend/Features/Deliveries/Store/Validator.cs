@@ -10,8 +10,8 @@ public class Validator : Validator<DeliveryStoreReq>
         RuleFor(x => x.TrackingNumber).NotEmpty();
         RuleFor(x => x.Address).NotEmpty();
         RuleFor(x => x.Amount).NotEmpty();
-        RuleFor(x => x.PackageType).IsInEnum();
-        RuleFor(x => x.Size).IsInEnum();
+        RuleFor(x => x.PackageTypeId).NotEmpty();
+        RuleFor(x => x.SizeId).NotEmpty();
         RuleFor(x => x.RecipientId).NotEmpty();
     }
 }

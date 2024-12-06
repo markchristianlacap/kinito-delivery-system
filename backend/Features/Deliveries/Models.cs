@@ -1,5 +1,3 @@
-using Backend.Enums;
-
 namespace Backend.Features.Deliveries;
 
 public class DeliveryModel
@@ -9,7 +7,7 @@ public class DeliveryModel
     public string? ContactNumber { get; set; }
     public string Address { get; set; } = null!;
     public decimal Amount { get; set; }
-    public PackageType PackageType { get; set; }
-    public SizeType Size { get; set; }
+    public Guid PackageTypeId { get; set; }
+    public Guid SizeId { get; set; }
     public Guid RecipientId { get; set; }
 }

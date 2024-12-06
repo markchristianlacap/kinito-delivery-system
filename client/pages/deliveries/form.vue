@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import type { PackageType } from '~/enums/package-type'
-import type { Size } from '~/enums/size'
-import { packageTypes } from '~/options/package-types'
-import { sizes } from '~/options/sizes'
-
 const recipientDialog = ref(false)
 const $q = useQuasar()
 const form = useForm({
@@ -13,10 +8,12 @@ const form = useForm({
   address: '',
   recipientId: '',
   amount: 0,
-  packageType: undefined as PackageType | undefined,
-  size: undefined as Size | undefined,
+  packageTypeId: '',
+  sizeId: '',
 })
 const recipients = useRequest(r => api.get('/options/recipients', { params: r }).then(r => r.data))
+const sizes = useRequest(() => api.get('/options/size-types').then(r => r.data))
+const packageTypes = useRequest(() => api.get('/options/package-types').then(r => r.data))
 function onSubmit() {
   form.submit(async (data) => {
     await api.post('/deliveries', data)
@@ -40,6 +37,10 @@ async function onRecipientSearch(value: string | undefined) {
   recipients.request.search = value
   await recipients.submit()
 }
+onMounted(() => {
+  sizes.submit()
+  packageTypes.submit()
+})
 </script>
 
 <template>
@@ -111,27 +112,27 @@ async function onRecipientSearch(value: string | undefined) {
           />
           <div class="grid grid-cols-2 gap-sm">
             <q-select
-              v-model="form.fields.packageType"
-              :options="packageTypes"
-              option-value="value"
-              option-label="label"
+              v-model="form.fields.packageTypeId"
+              :options="packageTypes.response || []"
+              option-value="id"
+              option-label="name"
               label="Package Type"
               emit-value
               map-options
-              :error-message="form.getError('packageType')"
+              :error-message="form.getError('packageTypeId')"
               clearable
-              :error="form.hasError('packageType')"
+              :error="form.hasError('packageTypeId')"
             />
             <q-select
-              v-model="form.fields.size"
-              :options="sizes"
-              option-value="value"
-              option-label="label"
+              v-model="form.fields.sizeId"
+              :options="sizes.response || []"
+              option-value="id"
+              option-label="name"
               label="Size"
-              :error-message="form.getError('size')"
+              :error-message="form.getError('sizeId')"
               map-options
               emit-value
-              :error="form.hasError('size')"
+              :error="form.hasError('sizeId')"
             />
           </div>
           <QInput

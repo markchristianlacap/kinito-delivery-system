@@ -27,4 +27,6 @@ public class AppDbContext(
     public DbSet<Recipient> Recipients { get; set; } = null!;
     public DbSet<Delivery> Deliveries { get; set; } = null!;
     public DbSet<DeliveryHistory> DeliveryHistories { get; set; } = null!;
+    public DbSet<PackageType> PackageTypes { get; set; } = null!;
+    public DbSet<SizeType> SizeTypes { get; set; } = null!;
 }

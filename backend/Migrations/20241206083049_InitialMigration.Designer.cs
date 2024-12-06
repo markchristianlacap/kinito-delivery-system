@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241129082219_AddedDeliveriesAndRecipients")]
-    partial class AddedDeliveriesAndRecipients
+    [Migration("20241206083049_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,14 +53,21 @@ namespace Backend.Migrations
                     b.Property<int>("DeliveryStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PackageType")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PackageTypeId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("RecipientId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<string>("ReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("SizeId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("SizeTypeId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("TrackingNumber")
                         .IsRequired()
@@ -76,7 +83,11 @@ namespace Backend.Migrations
 
                     b.HasIndex("CreatedById");
 
+                    b.HasIndex("PackageTypeId");
+
                     b.HasIndex("RecipientId");
+
+                    b.HasIndex("SizeTypeId");
 
                     b.HasIndex("UpdatedById");
 
@@ -119,6 +130,24 @@ namespace Backend.Migrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("DeliveryHistories");
+                });
+
+            modelBuilder.Entity("Backend.Entities.PackageType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PackageTypes");
                 });
 
             modelBuilder.Entity("Backend.Entities.Recipient", b =>
@@ -194,6 +223,24 @@ namespace Backend.Migrations
                     b.ToTable("ResetPasswords");
                 });
 
+            modelBuilder.Entity("Backend.Entities.SizeType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SizeTypes");
+                });
+
             modelBuilder.Entity("Backend.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -256,9 +303,21 @@ namespace Backend.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
+                    b.HasOne("Backend.Entities.PackageType", "PackageType")
+                        .WithMany()
+                        .HasForeignKey("PackageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Backend.Entities.Recipient", "Recipient")
                         .WithMany()
                         .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Entities.SizeType", "SizeType")
+                        .WithMany()
+                        .HasForeignKey("SizeTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -268,7 +327,11 @@ namespace Backend.Migrations
 
                     b.Navigation("CreatedBy");
 
+                    b.Navigation("PackageType");
+
                     b.Navigation("Recipient");
+
+                    b.Navigation("SizeType");
 
                     b.Navigation("UpdatedBy");
                 });
