@@ -2,7 +2,7 @@ using Backend.Database;
 using Backend.Enums;
 using Humanizer;
 
-namespace Backend.Features.Deliveries.Index;
+namespace Backend.Features.Deliveries.ToShip;
 
 public class DeliveryRowRes : DeliveryModel
 {
@@ -16,4 +16,8 @@ public class DeliveryRowRes : DeliveryModel
     public string DeliveryStatusDesc => DeliveryStatus.Humanize(LetterCasing.Title);
 }
 
-public class DeliveryPagedReq : PagedReq { }
+public class DeliveryPagedReq : PagedReq
+{
+    public DateTime? ArrivalDate { get; set; }
+    public bool? IsShipped { get; set; }
+}

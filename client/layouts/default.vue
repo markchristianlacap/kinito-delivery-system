@@ -32,14 +32,29 @@ async function logout() {
             Dashboard
           </q-item-section>
         </q-item>
+        <q-item-label header>
+          Deliveries
+        </q-item-label>
+        <q-separator spaced />
         <q-item v-ripple clickable to="/deliveries">
           <q-item-section avatar>
             <q-icon name="work_history" />
           </q-item-section>
           <q-item-section>
-            Deliveries
+            List of Deliveries
           </q-item-section>
         </q-item>
+        <q-item v-ripple clickable to="/deliveries/to-ship">
+          <q-item-section avatar>
+            <q-icon name="local_shipping" />
+          </q-item-section>
+          <q-item-section>
+            To Ship
+          </q-item-section>
+        </q-item>
+
+        <q-separator spaced />
+
         <q-item v-ripple clickable to="/recipients">
           <q-item-section avatar>
             <q-icon name="group" />

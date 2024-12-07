@@ -16,6 +16,7 @@
     "@chenfengyuan/vue-barcode": "^2.0.2",
     "@mdi/font": "^7.4.47",
     "@quasar/extras": "^1.16.15",
+    "@teckel/vue-barcode-reader": "^1.1.8",
     "@unocss/reset": "0.65.1",
     "axios": "^1.7.9",
     "jsbarcode": "^3.11.6",
