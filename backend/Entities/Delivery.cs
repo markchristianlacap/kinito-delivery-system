@@ -18,4 +18,5 @@ public class Delivery : AuditEntity
     public SizeType SizeType { get; set; } = null!;
     public PackageType PackageType { get; set; } = null!;
     public DeliveryStatus DeliveryStatus { get; set; }
+    public List<DeliveryHistory> Histories { get; set; } = [];
 }

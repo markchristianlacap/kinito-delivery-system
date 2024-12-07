@@ -30,7 +30,16 @@ public class Endpoint : EndpointWithoutRequest<DeliveryShowRes>
             )
             .Map(d => d.PackageTypeName, s => s.PackageType.Name)
             .Map(d => d.SizeTypeName, s => s.SizeType.Name);
-
+        cfg.NewConfig<DeliveryHistory, DeliveryHistoryModel>()
+            .Map(
+                d => d.CreatedByUserName,
+                s =>
+                    s.CreatedBy!.LastName
+                    + ", "
+                    + s.CreatedBy.FirstName
+                    + " "
+                    + s.CreatedBy.MiddleName
+            );
         var res = await Db
             .Deliveries.ProjectToType<DeliveryShowRes>(cfg)
             .AsNoTracking()
@@ -40,6 +49,7 @@ public class Endpoint : EndpointWithoutRequest<DeliveryShowRes>
             await SendNotFoundAsync(ct);
             return;
         }
+        res.Histories = [.. res.Histories!.OrderByDescending(h => h.CreatedAt)];
         Response = res;
     }
 }
