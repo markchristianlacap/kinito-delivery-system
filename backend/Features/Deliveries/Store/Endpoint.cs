@@ -24,6 +24,18 @@ public class Endpoint : Endpoint<DeliveryStoreReq>
             ThrowError(x => x.RecipientId, "Recipient not found");
             return;
         }
+        var existPackageType = await Db.PackageTypes.AnyAsync(x => x.Id == req.PackageTypeId, ct);
+        if (existPackageType is false)
+        {
+            ThrowError(x => x.PackageTypeId, "Package type not found");
+            return;
+        }
+        var existSize = await Db.SizeTypes.AnyAsync(x => x.Id == req.SizeTypeId, ct);
+        if (existSize is false)
+        {
+            ThrowError(x => x.SizeTypeId, "Size not found");
+            return;
+        }
         var delivery = req.Adapt<Delivery>();
         delivery.ReferenceNumber = await ReferenceNumberService.GenerateReferenceNumberAsync(ct);
         await Db.Deliveries.AddAsync(delivery, ct);

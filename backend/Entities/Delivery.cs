@@ -12,7 +12,7 @@ public class Delivery : AuditEntity
     public string Address { get; set; } = null!;
     public decimal Amount { get; set; }
     public Guid PackageTypeId { get; set; }
-    public Guid SizeId { get; set; }
+    public Guid SizeTypeId { get; set; }
     public Guid RecipientId { get; set; }
     public Recipient Recipient { get; set; } = null!;
     public SizeType SizeType { get; set; } = null!;

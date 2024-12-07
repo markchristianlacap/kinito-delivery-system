@@ -11,7 +11,7 @@ public class Validator : Validator<DeliveryUpdateReq>
         RuleFor(x => x.Address).NotEmpty();
         RuleFor(x => x.Amount).NotEmpty();
         RuleFor(x => x.PackageTypeId).NotEmpty();
-        RuleFor(x => x.SizeId).NotEmpty();
+        RuleFor(x => x.SizeTypeId).NotEmpty();
         RuleFor(x => x.RecipientId).NotEmpty();
     }
 }

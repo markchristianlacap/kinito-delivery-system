@@ -60,9 +60,6 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("SizeId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("SizeTypeId")
                         .HasColumnType("char(36)");
 

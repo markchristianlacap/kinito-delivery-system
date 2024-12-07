@@ -19,6 +19,9 @@ function copyReferenceNumber() {
     message: 'Reference Number Copied to clipboard',
   })
 }
+function print() {
+  window.open(`/deliveries/${id}/print`, '_blank', 'location=yes,height=600,width=800')
+}
 onMounted(() => delivery.submit())
 </script>
 
@@ -31,6 +34,7 @@ onMounted(() => delivery.submit())
             <q-btn flat dense to="/deliveries/" color="primary" icon="arrow_back" />
             Delivery Details
           </p>
+          <q-btn no-caps icon-right="print" label="Print" color="primary" @click="print()" />
         </div>
         <div v-if="delivery.response">
           <p class="text-lg">
@@ -115,7 +119,7 @@ onMounted(() => delivery.submit())
                   Package Type
                 </q-item-label>
                 <q-item-label class="text-bold">
-                  {{ delivery.response.packageTypeDesc }}
+                  {{ delivery.response.packageTypeName }}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -125,7 +129,7 @@ onMounted(() => delivery.submit())
                   Size
                 </q-item-label>
                 <q-item-label class="text-bold">
-                  {{ delivery.response.sizeDesc }}
+                  {{ delivery.response.sizeTypeName }}
                 </q-item-label>
               </q-item-section>
             </q-item>

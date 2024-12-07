@@ -9,7 +9,7 @@ const form = useForm({
   recipientId: '',
   amount: 0,
   packageTypeId: '',
-  sizeId: '',
+  sizeTypeId: '',
 })
 const recipients = useRequest(r => api.get('/options/recipients', { params: r }).then(r => r.data))
 const sizes = useRequest(() => api.get('/options/size-types').then(r => r.data))
@@ -124,15 +124,15 @@ onMounted(() => {
               :error="form.hasError('packageTypeId')"
             />
             <q-select
-              v-model="form.fields.sizeId"
+              v-model="form.fields.sizeTypeId"
               :options="sizes.response || []"
               option-value="id"
               option-label="name"
               label="Size"
-              :error-message="form.getError('sizeId')"
+              :error-message="form.getError('sizeTypeId')"
               map-options
               emit-value
-              :error="form.hasError('sizeId')"
+              :error="form.hasError('sizeTypeId')"
             />
           </div>
           <QInput

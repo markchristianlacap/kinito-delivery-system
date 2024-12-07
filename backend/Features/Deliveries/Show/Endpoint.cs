@@ -27,7 +27,9 @@ public class Endpoint : EndpointWithoutRequest<DeliveryShowRes>
                     + s.Recipient.FirstName
                     + " "
                     + s.Recipient.MiddleName
-            );
+            )
+            .Map(d => d.PackageTypeName, s => s.PackageType.Name)
+            .Map(d => d.SizeTypeName, s => s.SizeType.Name);
 
         var res = await Db
             .Deliveries.ProjectToType<DeliveryShowRes>(cfg)
