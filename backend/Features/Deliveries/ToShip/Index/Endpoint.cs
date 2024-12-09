@@ -3,7 +3,7 @@ using Backend.Entities;
 using Backend.Enums;
 using Mapster;
 
-namespace Backend.Features.Deliveries.ToShip;
+namespace Backend.Features.Deliveries.ToShip.Index;
 
 public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
 {

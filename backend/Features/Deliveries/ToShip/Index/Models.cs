@@ -2,7 +2,7 @@ using Backend.Database;
 using Backend.Enums;
 using Humanizer;
 
-namespace Backend.Features.Deliveries.ToShip;
+namespace Backend.Features.Deliveries.ToShip.Index;
 
 public class DeliveryRowRes : DeliveryModel
 {

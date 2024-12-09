@@ -3,7 +3,6 @@ import type { QTableProps } from 'quasar'
 import { DeliveryStatus } from '~/enums/delivery-status'
 
 const dialog = ref(false)
-const deliveryStatus = useDeliveryStatus()
 const deliveries = useRequestTable(r => api.get('/deliveries/to-ship', { params: r }).then(r => r.data), { arrivalDate: useToday(), isShipped: null as null | boolean })
 const columns: QTableProps['columns'] = [
   {
@@ -136,7 +135,7 @@ watchDeep(deliveries.request, () => deliveries.submit())
             </q-td>
           </template>
         </q-table>
-        <barcode-scanner v-model="dialog" />
+        <to-ship-barcode-scanner v-model="dialog" @stop="() => deliveries.submit()" />
       </QCardSection>
     </QCard>
   </QPage>
