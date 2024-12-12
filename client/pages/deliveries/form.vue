@@ -72,15 +72,14 @@ onMounted(() => {
             v-model="form.fields.recipientId"
             label="Recipient"
             :error-message="form.getError('recipientId')"
-            map-options
-            emit-value
+
             :error="form.hasError('recipientId')"
             :options="recipients.response || []"
             option-value="id"
             option-label="fullName"
-            clearable
+
             :input-debounce="300"
-            use-input
+            emit-value clearable use-input map-options
             placeholder="Type to Search Recipient"
             @input-value="onRecipientSearch"
           >

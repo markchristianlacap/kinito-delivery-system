@@ -53,7 +53,7 @@ onMounted(() => delivery.submit())
               </span>
             </p>
             <barcode :code="delivery.response.referenceNumber" />
-            <q-list separator padding>
+            <q-list padding separator>
               <q-item>
                 <q-item-section>
                   <q-item-label>
