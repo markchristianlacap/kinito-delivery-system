@@ -13,6 +13,7 @@ public class RecipientOptionRes
     public string Address { get; set; } = null!;
     public string ContactNumber { get; set; } = null!;
     public string? Email { get; set; }
+    public int TotalDeliveries { get; set; }
 }
 
 public class RecipientOptionReq

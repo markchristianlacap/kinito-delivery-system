@@ -31,7 +31,7 @@ onMounted(() => delivery.submit())
       <q-card-section>
         <div class="flex items-center justify-between">
           <p class="text-h6">
-            <q-btn flat dense to="/deliveries/" color="primary" icon="arrow_back" />
+            <q-btn flat dense color="primary" icon="arrow_back" @click="$router.back()" />
             Delivery Details
           </p>
           <q-btn no-caps icon-right="print" label="Print" color="primary" @click="print()" />

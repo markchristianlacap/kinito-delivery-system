@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { QTableProps } from 'quasar'
-import { DeliveryStatus } from '~/enums/delivery-status'
 
 const dialog = ref(false)
-const deliveries = useRequestTable(r => api.get('/deliveries/to-ship', { params: r }).then(r => r.data), { arrivalDate: useToday(), isShipped: null as null | boolean })
+const deliveries = useRequestTable(r => api.get('/deliveries/to-arrive', { params: r }).then(r => r.data), { arrivalDate: useToday(), isShipped: null as null | boolean })
 const columns: QTableProps['columns'] = [
   {
     label: 'Reference Number',
@@ -82,7 +81,7 @@ watchDeep(deliveries.request, () => deliveries.submit())
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-sm">
             <p class="text-h6">
-              To Ship Deliveries
+              To Arrive Deliveries
             </p>
           </div>
           <div class="flex items-center gap-sm">
@@ -103,12 +102,12 @@ watchDeep(deliveries.request, () => deliveries.submit())
               @click="deliveries.request.isShipped = null"
             />
             <q-btn
-              label="Pending" icon="pending" color="secondary" :outline="deliveries.request.isShipped === false"
+              label="Shipped" icon="local_shipping" color="secondary" :outline="deliveries.request.isShipped === false"
               @click="deliveries.request.isShipped = false"
             />
 
             <q-btn
-              label="Scanned" icon="done" color="secondary" :outline="deliveries.request.isShipped === true"
+              label="Arrived" icon="done" color="secondary" :outline="deliveries.request.isShipped === true"
               @click="deliveries.request.isShipped = true"
             />
           </q-btn-group>
@@ -123,7 +122,7 @@ watchDeep(deliveries.request, () => deliveries.submit())
             <q-td :props="props">
               <q-badge
                 :color="props.row.isShipped ? 'positive' : 'secondary'"
-                :label="props.row.isShipped ? 'Shipped' : 'Pending'"
+                :label="props.row.isShipped ? 'Arrived' : 'Shipped'"
               />
             </q-td>
           </template>
@@ -138,7 +137,7 @@ watchDeep(deliveries.request, () => deliveries.submit())
             </q-td>
           </template>
         </q-table>
-        <to-ship-barcode-scanner v-model:dialog="dialog" @stop="() => deliveries.submit()" />
+        <to-arrive-barcode-scanner v-model:dialog="dialog" @stop="() => deliveries.submit()" />
       </QCardSection>
     </QCard>
   </QPage>

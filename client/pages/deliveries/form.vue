@@ -14,6 +14,8 @@ const form = useForm({
 const recipients = useRequest(r => api.get('/options/recipients', { params: r }).then(r => r.data))
 const sizes = useRequest(() => api.get('/options/size-types').then(r => r.data))
 const packageTypes = useRequest(() => api.get('/options/package-types').then(r => r.data))
+
+const recipient = computed(() => recipients?.response?.find((r: any) => r.id === form.fields.recipientId))
 function onSubmit() {
   form.submit(async (data) => {
     await api.post('/deliveries', data)
@@ -134,6 +136,9 @@ onMounted(() => {
               :error="form.hasError('sizeTypeId')"
             />
           </div>
+          <p v-if="recipient" class="font-bold">
+            Number of Deliveries: {{ recipient.totalDeliveries }} Deliveries
+          </p>
           <QInput
             v-model="form.fields.amount"
             label="Amount"

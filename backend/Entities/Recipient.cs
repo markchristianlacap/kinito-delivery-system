@@ -10,4 +10,5 @@ public class Recipient : AuditEntity
     public string Address { get; set; } = null!;
     public string ContactNumber { get; set; } = null!;
     public string? Email { get; set; }
+    public List<Delivery> Deliveries { get; set; } = null!;
 }

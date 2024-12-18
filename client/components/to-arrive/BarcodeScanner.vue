@@ -14,7 +14,7 @@ function onDecode(result: string) {
     message: 'Are you sure you want to mark this as shipped?',
     cancel: true,
   }).onOk(async () => {
-    await api.put(`/deliveries/to-ship/${result}`)
+    await api.put(`/deliveries/to-arrive/${result}`)
     $q.notify({
       message: 'Successfully marked as shipped',
       color: 'positive',
@@ -23,13 +23,13 @@ function onDecode(result: string) {
 }
 function onClose() {
   dialog.value = false
-  emits('stop')
   referenceNumber.value = ''
+  emits('stop')
 }
 </script>
 
 <template>
-  <q-dialog v-model="dialog">
+  <q-dialog v-model="dialog" persistent>
     <q-card class="w-xl">
       <q-card-section>
         <p class="text-h6">

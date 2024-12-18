@@ -1,4 +1,5 @@
 using Backend.Database;
+using Backend.Entities;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +24,12 @@ public class Endpoint : Endpoint<RecipientOptionReq, List<RecipientOptionRes>>
                 || x.Id == req.Id
             );
         }
+        var mapCfg = new TypeAdapterConfig();
+        mapCfg
+            .NewConfig<Recipient, RecipientOptionRes>()
+            .Map(dest => dest.TotalDeliveries, src => src.Deliveries.Count);
         var res = await query
-            .ProjectToType<RecipientOptionRes>()
+            .ProjectToType<RecipientOptionRes>(mapCfg)
             .OrderBy(x => req.Id == x.Id ? 0 : 1)
             .ToListAsync(ct);
         Response = res;

@@ -52,7 +52,14 @@ async function logout() {
             To Ship
           </q-item-section>
         </q-item>
-
+        <q-item v-ripple clickable to="/deliveries/to-arrive">
+          <q-item-section avatar>
+            <q-icon name="check_circle" />
+          </q-item-section>
+          <q-item-section>
+            To Arrive
+          </q-item-section>
+        </q-item>
         <q-separator spaced />
 
         <q-item v-ripple clickable to="/recipients">
