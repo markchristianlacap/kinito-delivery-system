@@ -29,4 +29,5 @@ public class AppDbContext(
     public DbSet<DeliveryHistory> DeliveryHistories { get; set; } = null!;
     public DbSet<PackageType> PackageTypes { get; set; } = null!;
     public DbSet<SizeType> SizeTypes { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 }

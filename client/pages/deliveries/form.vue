@@ -31,6 +31,8 @@ function onNewRecipient() {
 }
 function onNewRecipientSuccess(data: any) {
   form.fields.recipientId = data.id
+  form.fields.contactNumber = data.contactNumber
+  form.fields.address = data.address
   recipientDialog.value = false
   recipients.request.id = data.id
   recipients.submit()

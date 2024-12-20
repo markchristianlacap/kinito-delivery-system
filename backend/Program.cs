@@ -1,12 +1,16 @@
 ﻿global using FastEndpoints;
 using System.Text.Json;
+using Backend.Constants;
 using Backend.Database;
 using Backend.Database.Interceptors;
 using Backend.Database.Seeders;
 using Backend.Services;
 using FastEndpoints.Security;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 var bld = WebApplication.CreateBuilder();
 var config = bld.Configuration;
@@ -21,16 +25,38 @@ bld.Services.AddDbContext<AppDbContext>(options =>
 bld.Services.AddSingleton<IUserService, UserService>();
 bld.Services.AddSingleton<IStorageService, StorageService>();
 bld.Services.AddSingleton<AppDbInterceptor>();
-bld.Services.AddSingleton<IEmailService, EmailService>();
 bld.Services.AddScoped<IReferenceNumberService, ReferenceNumberService>();
+bld.Services.AddSingleton<IEmailService, EmailService>();
 bld.Services.AddSpaStaticFiles(o => o.RootPath = "dist");
 bld.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(directory))
     .SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 bld.Services.AddAuthenticationCookie(validFor: TimeSpan.FromHours(8))
-    .AddAuthorization()
-    .AddFastEndpoints();
+    .AddAuthenticationJwtBearer(s => s.SigningKey = config["JwtKey:Secret"])
+    .AddAuthentication(o =>
+    {
+        o.DefaultScheme = AuthConstants.JwtOrCookie;
+        o.DefaultAuthenticateScheme = AuthConstants.JwtOrCookie;
+    })
+    .AddPolicyScheme(
+        AuthConstants.JwtOrCookie,
+        AuthConstants.JwtOrCookie,
+        o =>
+        {
+            o.ForwardDefaultSelector = ctx =>
+            {
+                if (
+                    ctx.Request.Headers.TryGetValue(HeaderNames.Authorization, out var authHeader)
+                    && authHeader.FirstOrDefault()?.StartsWith("Bearer ") is true
+                )
+                {
+                    return JwtBearerDefaults.AuthenticationScheme;
+                }
+                return CookieAuthenticationDefaults.AuthenticationScheme;
+            };
+        }
+    );
 
 var app = bld.Build();
 
