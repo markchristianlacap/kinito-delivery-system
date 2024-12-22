@@ -1,9 +1,8 @@
-﻿using Backend.Entities.Common;
-using Backend.Enums;
+﻿using Backend.Enums;
 
-namespace Backend.Entities;
+namespace Backend.Features.Admin.Users;
 
-public class User : BaseEntity
+public class UserModel
 {
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
@@ -11,10 +10,7 @@ public class User : BaseEntity
     public string? ExtensionName { get; set; }
     public string Email { get; set; } = null!;
     public string ContactNumber { get; set; } = null!;
-    public DateOnly Birthdate { get; set; }
+    public DateOnly? Birthdate { get; set; }
     public string Address { get; set; } = null!;
-    public string Password { get; set; } = null!;
-    public Role Role { get; set; }
-    public bool IsActive { get; set; } = false;
-    public DateTime? DeletedAt { get; set; }
+    public Role? Role { get; set; } = null;
 }

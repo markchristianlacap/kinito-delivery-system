@@ -1,4 +1,5 @@
 ﻿using Backend.Entities;
+using Backend.Enums;
 
 namespace Backend.Database.Seeders;
 
@@ -14,6 +15,7 @@ public static class UsersSeeder
             Password = BCrypt.Net.BCrypt.EnhancedHashPassword("password"),
             ContactNumber = "n/a",
             Address = "n/a",
+            Role = Role.Admin,
         };
 
         if (!context.Users.Any(u => u.Email == admin.Email))
