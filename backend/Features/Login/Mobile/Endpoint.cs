@@ -1,11 +1,12 @@
 using System.Security.Claims;
 using Backend.Database;
 using Backend.Services;
+using FastEndpoints.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Login.Mobile;
 
-public class Endpoint : Endpoint<LoginReq>
+public class Endpoint : Endpoint<LoginReq, TokenResponse>
 {
     public AppDbContext Db { get; set; } = null!;
 

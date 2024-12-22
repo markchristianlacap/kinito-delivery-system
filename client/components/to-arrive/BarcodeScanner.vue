@@ -9,27 +9,27 @@ const dialog = defineModel<boolean>('dialog')
 function onDecode(result: string) {
   referenceNumber.value = result
   $q.dialog({
-    title: `${result} mark as Shipped`,
+    title: `${result} mark as Arrived`,
     persistent: true,
-    message: 'Are you sure you want to mark this as shipped?',
+    message: 'Are you sure you want to mark this as arrived?',
     cancel: true,
   }).onOk(async () => {
     await api.put(`/deliveries/to-arrive/${result}`)
     $q.notify({
-      message: 'Successfully marked as shipped',
+      message: 'Successfully marked as arrived',
       color: 'positive',
     })
   })
 }
 function onClose() {
+  emits('stop')
   dialog.value = false
   referenceNumber.value = ''
-  emits('stop')
 }
 </script>
 
 <template>
-  <q-dialog v-model="dialog" persistent>
+  <q-dialog v-model="dialog">
     <q-card class="w-xl">
       <q-card-section>
         <p class="text-h6">
@@ -37,8 +37,7 @@ function onClose() {
         </p>
         <p v-if="referenceNumber">
           Scanned Reference Number: {{ referenceNumber }}
-        </p>
-        <StreamBarcodeReader
+        </p> <StreamBarcodeReader
           torch
           no-front-cameras
           @decode="onDecode"

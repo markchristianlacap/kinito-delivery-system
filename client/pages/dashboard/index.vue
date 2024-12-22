@@ -1,5 +1,10 @@
 <script setup lang="ts">
 const useUserState = useUser()
+const statuses = useRequest(() => api.get('/dashboard/delivery-statuses').then(res => res.data))
+const deliveryStatus = useDeliveryStatus()
+onMounted(() => {
+  statuses.submit()
+})
 </script>
 
 <template>
@@ -19,28 +24,23 @@ const useUserState = useUser()
 
         <!-- Main dashboard cards -->
         <q-card-section>
-          <q-card flat bordered class="q-pa-md q-mb-md row items-center justify-between" style="max-width: 300px;">
-            <q-icon name="pending_actions" color="positive" size="lg" />
-            <div>
-              <div class="text-h5">
-                230
-              </div>
-              <div class="text-subtitle2">
-                Total Pending Deliveries
-              </div>
-            </div>
-          </q-card>
-          <q-card flat bordered class="q-pa-md q-mb-md row items-center justify-between" style="max-width: 300px;">
-            <q-icon name="work_history" color="accent" size="lg" />
-            <div>
-              <div class="text-h5">
-                2,000
-              </div>
-              <div class="text-subtitle2">
-                Done Delivered
-              </div>
-            </div>
-          </q-card>
+          <div class="flex flex-wrap gap-sm">
+            <q-card v-for="status in statuses.response || []" :key="status.id" flat bordered style="min-width: 300px;">
+              <q-card-section>
+                <div class="flex justify-between">
+                  <q-icon :name="deliveryStatus.getIcon(status.deliveryStatus)" color="positive" size="lg" />
+                  <div>
+                    <div :class="`text-${deliveryStatus.getColor(status.deliveryStatus)} text-h5 font-bold`">
+                      {{ status.count }}
+                    </div>
+                    <div class="text-subtitle2">
+                      {{ status.deliveryStatusDesc }}
+                    </div>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
         </q-card-section>
       </q-card>
     </q-page>

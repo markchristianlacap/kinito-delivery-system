@@ -21,12 +21,12 @@ var directory = config.GetValue<string>("Directory") ?? "directory";
 bld.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
-
-bld.Services.AddSingleton<IUserService, UserService>();
+bld.Services.AddHttpContextAccessor();
 bld.Services.AddSingleton<IStorageService, StorageService>();
-bld.Services.AddSingleton<AppDbInterceptor>();
-bld.Services.AddScoped<IReferenceNumberService, ReferenceNumberService>();
+bld.Services.AddSingleton<IUserService, UserService>();
 bld.Services.AddSingleton<IEmailService, EmailService>();
+bld.Services.AddScoped<AppDbInterceptor>();
+bld.Services.AddScoped<IReferenceNumberService, ReferenceNumberService>();
 bld.Services.AddSpaStaticFiles(o => o.RootPath = "dist");
 bld.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(directory))
@@ -57,7 +57,7 @@ bld.Services.AddAuthenticationCookie(validFor: TimeSpan.FromHours(8))
             };
         }
     );
-
+bld.Services.AddAuthorization().AddFastEndpoints();
 var app = bld.Build();
 
 // Run args seed the database

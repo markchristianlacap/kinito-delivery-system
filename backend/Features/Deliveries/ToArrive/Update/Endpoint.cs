@@ -29,11 +29,11 @@ public class Endpoint : EndpointWithoutRequest
             return;
         }
         var user = await Db.Users.FirstOrDefaultAsync(x => x.Id == UserService.UserId, ct);
-        delivery.DeliveryStatus = DeliveryStatus.Shipped;
+        delivery.DeliveryStatus = DeliveryStatus.Arrive;
         var history = new DeliveryHistory
         {
             DeliveryId = delivery.Id,
-            DeliveryStatus = DeliveryStatus.Shipped,
+            DeliveryStatus = DeliveryStatus.Arrive,
             Remarks =
                 "Scanned by " + user!.LastName + ", " + user.FirstName + " " + user.MiddleName,
         };

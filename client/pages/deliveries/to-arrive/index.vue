@@ -2,7 +2,7 @@
 import type { QTableProps } from 'quasar'
 
 const dialog = ref(false)
-const deliveries = useRequestTable(r => api.get('/deliveries/to-arrive', { params: r }).then(r => r.data), { arrivalDate: useToday(), isShipped: null as null | boolean })
+const deliveries = useRequestTable(r => api.get('/deliveries/to-arrive', { params: r }).then(r => r.data), { arrivalDate: useToday(), isArrived: null as null | boolean })
 const columns: QTableProps['columns'] = [
   {
     label: 'Reference Number',
@@ -98,17 +98,17 @@ watchDeep(deliveries.request, () => deliveries.submit())
 
           <q-btn-group flat>
             <q-btn
-              label="All" icon="list" color="secondary" :outline="deliveries.request.isShipped === null"
-              @click="deliveries.request.isShipped = null"
+              label="All" icon="list" color="secondary" :outline="deliveries.request.isArrived === null"
+              @click="deliveries.request.isArrived = null"
             />
             <q-btn
-              label="Shipped" icon="local_shipping" color="secondary" :outline="deliveries.request.isShipped === false"
-              @click="deliveries.request.isShipped = false"
+              label="Shipped" icon="local_shipping" color="secondary" :outline="deliveries.request.isArrived === false"
+              @click="deliveries.request.isArrived = false"
             />
 
             <q-btn
-              label="Arrived" icon="done" color="secondary" :outline="deliveries.request.isShipped === true"
-              @click="deliveries.request.isShipped = true"
+              label="Arrived" icon="done" color="secondary" :outline="deliveries.request.isArrived === true"
+              @click="deliveries.request.isArrived = true"
             />
           </q-btn-group>
         </div>
@@ -121,8 +121,8 @@ watchDeep(deliveries.request, () => deliveries.submit())
           <template #body-cell-status="props">
             <q-td :props="props">
               <q-badge
-                :color="props.row.isShipped ? 'positive' : 'secondary'"
-                :label="props.row.isShipped ? 'Arrived' : 'Shipped'"
+                :color="props.row.isArrived ? 'positive' : 'secondary'"
+                :label="props.row.isArrived ? 'Arrived' : 'Shipped'"
               />
             </q-td>
           </template>

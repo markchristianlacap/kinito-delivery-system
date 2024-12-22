@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { QTable } from 'quasar'
 
+const router = useRouter()
 const dialog = ref(false)
 const currentId = ref('')
 const recipients = useRequestTable(() => api.get('/recipients').then(r => r.data))
@@ -13,22 +14,11 @@ const form = ref({
   email: undefined,
 })
 const columns: QTable['columns'] = [
-  {
-    name: 'firstName',
-    label: 'First Name',
-    field: 'firstName',
-    align: 'left',
-  },
+
   {
     name: 'lastName',
     label: 'Last Name',
     field: 'lastName',
-    align: 'left',
-  },
-  {
-    name: 'middleName',
-    label: 'Middle Name',
-    field: 'middleName',
     align: 'left',
   },
   {
@@ -61,6 +51,9 @@ function onEdit(row: any) {
   dialog.value = true
   form.value = row
 }
+function gotoRecipient(id: string) {
+  router.push(`/recipients/${id}`)
+}
 onMounted(() => recipients.submit())
 </script>
 
@@ -75,6 +68,13 @@ onMounted(() => recipients.submit())
           <QBtn label="Create" color="primary" icon-right="task_alt" @click="dialog = true" />
         </div>
         <q-table v-model:pagination="recipients.pagination" :rows="recipients.response?.rows || []" :columns="columns" flat>
+          <template #body-cell-lastName="props">
+            <q-td :props="props">
+              <q-btn flat color="primary" no-caps dense @click="gotoRecipient(props.row.id)">
+                {{ props.row.firstName }}, {{ props.row.lastName }}
+              </q-btn>
+            </q-td>
+          </template>
           <template #body-cell-actions="props">
             <q-td :props="props">
               <q-btn

@@ -7,5 +7,9 @@ export function useDeliveryStatus() {
       const item = deliveryStatuses.find(s => s.value === status)
       return item?.color
     },
+    getIcon(status: DeliveryStatus) {
+      const item = deliveryStatuses.find(s => s.value === status)
+      return item?.icon
+    },
   }
 }
