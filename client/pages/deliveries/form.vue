@@ -41,6 +41,13 @@ async function onRecipientSearch(value: string | undefined) {
   recipients.request.search = value
   await recipients.submit()
 }
+function onRecipientSelect() {
+  const recipient = recipients.response.find((r: any) => r.id === form.fields.recipientId)
+  if (!recipient)
+    return
+  form.fields.contactNumber = recipient.contactNumber
+  form.fields.address = recipient.address
+}
 onMounted(() => {
   sizes.submit()
   packageTypes.submit()
@@ -74,18 +81,17 @@ onMounted(() => {
           />
           <q-select
             v-model="form.fields.recipientId"
-            label="Recipient"
+            label="Search Recipient"
             :error-message="form.getError('recipientId')"
-
             :error="form.hasError('recipientId')"
             :options="recipients.response || []"
             option-value="id"
             option-label="fullName"
-
             :input-debounce="300"
             emit-value clearable use-input map-options
             placeholder="Type to Search Recipient"
             @input-value="onRecipientSearch"
+            @update:model-value="onRecipientSelect"
           >
             <template #append>
               <q-btn icon="add" size="sm" color="primary" @click="onNewRecipient" />
