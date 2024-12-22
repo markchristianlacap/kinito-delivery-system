@@ -70,6 +70,14 @@ async function logout() {
             Recipients
           </q-item-section>
         </q-item>
+        <q-item v-ripple clickable to="/admin/users">
+          <q-item-section avatar>
+            <q-icon name="admin_panel_settings" />
+          </q-item-section>
+          <q-item-section>
+            User Management
+          </q-item-section>
+        </q-item>
 
         <q-item v-ripple clickable to="/reports">
           <q-item-section avatar>

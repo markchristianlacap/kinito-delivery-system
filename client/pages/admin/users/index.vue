@@ -107,7 +107,7 @@ function onDelete(row: any) {
     cancel: true,
     persistent: true,
   }).onOk(async () => {
-    await api.delete(`/user/users/${row.id}`)
+    await api.delete(`/admin/users/${row.id}`)
     requests.submit()
     $q.notify({
       type: 'positive',
@@ -132,12 +132,7 @@ onMounted(() => requests.submit())
       </div>
     </div>
     <div>
-      <QInput v-model="requests.request.search" label="Search">
-        <template #prepend>
-          <QIcon>
-            <div class="i-hugeicons:search-02" />
-          </QIcon>
-        </template>
+      <QInput v-model="requests.request.search" label="Search User">
         <template #append>
           <QBtn label="Add User" color="primary" @click="addUser" />
         </template>
@@ -156,10 +151,10 @@ onMounted(() => requests.submit())
       <template #body-cell-actions="props">
         <QTd :props="props">
           <div class="flex gap-xs">
-            <QBtn size="sm" color="negative" outline @click="onDelete(props.row)">
+            <QBtn size="sm" color="negative" @click="onDelete(props.row)">
               Delete
             </QBtn>
-            <QBtn size="sm" color="primary" outline @click="onEdit(props.row)">
+            <QBtn size="sm" color="secondary" @click="onEdit(props.row)">
               Edit
             </QBtn>
           </div>
