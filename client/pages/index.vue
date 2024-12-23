@@ -18,11 +18,11 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="mx-auto mt-5xl max-w-120 w-full">
-    <QCard>
+  <div class="grid mx-auto h-screen w-full place-items-center px-4">
+    <QCard flat bordered class="h-full max-h-100 max-w-120 w-full">
       <QCardSection>
         <QForm @submit.prevent="onSubmit">
-          <p class="text-xl text-primary font-bold">
+          <p class="mb-xl text-xl text-primary font-bold">
             Kinito Delivery System
           </p>
           <p class="mb-xl flex items-center text-xl text-gray-7 font-bold">
@@ -81,6 +81,7 @@ async function onSubmit() {
               :loading="form.loading"
               icon-right="task_alt"
               label="Login"
+              class="w-full"
             />
           </div>
         </QForm>

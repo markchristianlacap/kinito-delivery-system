@@ -29,23 +29,22 @@ function onClose() {
 </script>
 
 <template>
-  <q-dialog v-model="dialog">
-    <q-card class="w-xl">
-      <q-card-section>
-        <p class="text-h6">
-          Scan Barcode
-        </p>
+  <q-dialog v-model="dialog" persistent>
+    <q-card>
+      <div class="p-sm">
+        <div class="flex items-center justify-between">
+          <p class="text-h6">
+            Scan Barcode to mark as Arrived
+          </p>
+          <q-btn flat color="negative" icon="close" @click="onClose" />
+        </div>
         <p v-if="referenceNumber">
           Scanned Reference Number: {{ referenceNumber }}
-        </p> <StreamBarcodeReader
-          torch
-          no-front-cameras
-          @decode="onDecode"
-        />
-      </q-card-section>
-      <q-card-actions>
-        <q-btn label="Stop Scanning" color="primary" @click="onClose" />
-      </q-card-actions>
+        </p>
+      </div>
+      <StreamBarcodeReader
+        @decode="onDecode"
+      />
     </q-card>
   </q-dialog>
 </template>

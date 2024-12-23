@@ -87,9 +87,9 @@ watch(dialog, () => {
             :error="form.hasError('email')"
             :error-message="form.getError('email')"
           />
-          <div class="flex gap-sm">
-            <q-btn label="Close" flat color="negative" @click="dialog = false" />
-            <q-btn label="Save" color="primary" icon-right="task_alt" type="submit" />
+          <div class="grid grid-cols-2 gap-sm">
+            <q-btn label="Close" flat color="negative" class="w-full" @click="dialog = false" />
+            <q-btn label="Save" color="primary" icon-right="task_alt" type="submit" class="w-full" />
           </div>
         </q-form>
       </q-card-section>

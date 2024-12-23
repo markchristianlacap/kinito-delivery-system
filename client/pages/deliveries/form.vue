@@ -88,7 +88,7 @@ onMounted(() => {
             option-value="id"
             option-label="fullName"
             :input-debounce="300"
-            emit-value clearable use-input map-options
+            emit-value map-options clearable use-input
             placeholder="Type to Search Recipient"
             @input-value="onRecipientSearch"
             @update:model-value="onRecipientSelect"

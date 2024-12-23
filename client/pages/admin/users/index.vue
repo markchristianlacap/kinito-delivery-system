@@ -151,10 +151,10 @@ onMounted(() => requests.submit())
       <template #body-cell-actions="props">
         <QTd :props="props">
           <div class="flex gap-xs">
-            <QBtn size="sm" color="negative" @click="onDelete(props.row)">
+            <QBtn size="sm" color="negative" icon="delete" @click="onDelete(props.row)">
               Delete
             </QBtn>
-            <QBtn size="sm" color="secondary" @click="onEdit(props.row)">
+            <QBtn size="sm" color="secondary" icon="edit" @click="onEdit(props.row)">
               Edit
             </QBtn>
           </div>

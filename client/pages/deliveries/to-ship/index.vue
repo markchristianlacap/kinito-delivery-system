@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { QTableProps } from 'quasar'
-import { DeliveryStatus } from '~/enums/delivery-status'
 
 const dialog = ref(false)
 const deliveries = useRequestTable(r => api.get('/deliveries/to-ship', { params: r }).then(r => r.data), { arrivalDate: useToday(), isShipped: null as null | boolean })
