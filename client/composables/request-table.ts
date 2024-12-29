@@ -12,7 +12,7 @@ export function useRequestTable<TRes = any, TReq = PagedReq>(
     response: { rows: [] as TRes[] } as PagedRes<TRes>,
     loading: false,
     resetPagination() {
-      this.pagination = { rowsPerPage: 15, page: 1 }
+      this.pagination = { rowsPerPage: 15, page: 1, sortBy: null, descending: false }
     },
     resetRequest() {
       this.request = params

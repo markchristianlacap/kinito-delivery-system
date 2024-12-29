@@ -49,7 +49,7 @@ async function logout() {
             <q-icon name="local_shipping" />
           </q-item-section>
           <q-item-section>
-            To Ship
+            To Ship (San Roque Office)
           </q-item-section>
         </q-item>
         <q-item v-ripple clickable to="/deliveries/to-arrive">
@@ -57,7 +57,7 @@ async function logout() {
             <q-icon name="check_circle" />
           </q-item-section>
           <q-item-section>
-            To Arrive
+            To Arrive (Semirara Office)
           </q-item-section>
         </q-item>
         <q-separator spaced />
