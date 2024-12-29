@@ -4,6 +4,9 @@ export function formatAmount(amount: number) {
     currency: 'PHP',
   }).format(amount)
 }
+export function formatNumber(number: number) {
+  return new Intl.NumberFormat('en-PH').format(number)
+}
 export function formatDate(date: string) {
   if (!date)
     return

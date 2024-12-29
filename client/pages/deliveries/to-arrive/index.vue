@@ -103,13 +103,22 @@ watchDeep(deliveries.request, () => deliveries.submit())
           </div>
         </div>
         <div class="mt-sm flex items-center justify-between gap-sm">
-          <q-input
-            v-model="deliveries.request.arrivalDate"
-            type="date"
-            label="Select Arrival Date"
-            class="w-32" hide-bottom-space
-          />
+          <div class="flex items-center gap-sm">
+            <q-input
+              v-model="deliveries.request.arrivalDate"
+              type="date"
+              label="Select Arrival Date"
+              class="w-32" hide-bottom-space
+            />
+            <div>
+              <b>
 
+                <!-- @vue-ignore -->
+                {{ formatNumber(deliveries.response.totalArrived) }}</b>
+              Arrived out of
+              {{ deliveries.response.rowsCount }}
+            </div>
+          </div>
           <q-btn-group flat>
             <q-btn
               label="All" icon="list" color="secondary" :outline="deliveries.request.isArrived === null"

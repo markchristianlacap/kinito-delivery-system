@@ -17,9 +17,14 @@ public class DeliveryRowRes : DeliveryModel
     public bool IsArrived => DeliveryStatus == DeliveryStatus.Arrive;
 }
 
+public class ToArriveDeliveryPagedRes : PagedRes<DeliveryRowRes>
+{
+    public int TotalArrived { get; set; }
+}
+
 public class DeliveryPagedReq : PagedReq
 {
     public string? Search { get; set; } = null!;
-    public DateTime? ArrivalDate { get; set; }
+    public DateTime ArrivalDate { get; set; }
     public bool? IsArrived { get; set; }
 }

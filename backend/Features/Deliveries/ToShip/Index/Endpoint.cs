@@ -2,10 +2,11 @@ using Backend.Database;
 using Backend.Entities;
 using Backend.Enums;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Deliveries.ToShip.Index;
 
-public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
+public class Endpoint : Endpoint<DeliveryPagedReq, ToShipDeliveryPagedRes>
 {
     public AppDbContext Db { get; set; } = null!;
 
@@ -19,13 +20,12 @@ public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
         var query = Db
             .Deliveries.AsQueryable()
             .Where(x =>
-                x.DeliveryStatus == DeliveryStatus.Encoded
-                || x.DeliveryStatus == DeliveryStatus.Shipped
+                (
+                    x.DeliveryStatus == DeliveryStatus.Encoded
+                    || x.DeliveryStatus == DeliveryStatus.Shipped
+                )
+                && x.Date.Date == req.ArrivalDate.Date
             );
-        if (req.ArrivalDate is not null)
-        {
-            query = query.Where(x => x.Date.Date == req.ArrivalDate.Value.Date);
-        }
         if (req.IsShipped is not null)
         {
             var status = req.IsShipped.Value ? DeliveryStatus.Shipped : DeliveryStatus.Encoded;
@@ -55,7 +55,13 @@ public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
                     + s.Recipient.MiddleName
             );
 
-        var res = await query.ProjectToType<DeliveryRowRes>(cfg).ToPagedAsync(req, ct);
+        var paged = await query.ProjectToType<DeliveryRowRes>(cfg).ToPagedAsync(req, ct);
+        var res = paged.Adapt<ToShipDeliveryPagedRes>();
+        res.TotalShipped = await Db
+            .Deliveries.Where(x =>
+                x.Date.Date == req.ArrivalDate.Date && x.DeliveryStatus == DeliveryStatus.Shipped
+            )
+            .CountAsync(ct);
         Response = res;
     }
 }

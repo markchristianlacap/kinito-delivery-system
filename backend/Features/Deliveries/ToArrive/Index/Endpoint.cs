@@ -2,6 +2,7 @@ using Backend.Database;
 using Backend.Entities;
 using Backend.Enums;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Features.Deliveries.ToArrive.Index;
 
@@ -19,13 +20,12 @@ public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
         var query = Db
             .Deliveries.AsQueryable()
             .Where(x =>
-                x.DeliveryStatus == DeliveryStatus.Arrive
-                || x.DeliveryStatus == DeliveryStatus.Shipped
+                (
+                    x.DeliveryStatus == DeliveryStatus.Arrive
+                    || x.DeliveryStatus == DeliveryStatus.Shipped
+                )
+                && x.Date.Date == req.ArrivalDate.Date
             );
-        if (req.ArrivalDate is not null)
-        {
-            query = query.Where(x => x.Date.Date == req.ArrivalDate.Value.Date);
-        }
         if (req.IsArrived is not null)
         {
             var status = req.IsArrived.Value ? DeliveryStatus.Arrive : DeliveryStatus.Shipped;
@@ -55,7 +55,12 @@ public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
                     + s.Recipient.MiddleName
             );
 
-        var res = await query.ProjectToType<DeliveryRowRes>(cfg).ToPagedAsync(req, ct);
+        var paged = await query.ProjectToType<DeliveryRowRes>(cfg).ToPagedAsync(req, ct);
+        var res = paged.Adapt<ToArriveDeliveryPagedRes>();
+        res.TotalArrived = await Db.Deliveries.CountAsync(
+            x => x.DeliveryStatus == DeliveryStatus.Arrive && x.Date.Date == req.ArrivalDate.Date,
+            ct
+        );
         Response = res;
     }
 }
