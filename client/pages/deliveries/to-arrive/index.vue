@@ -2,7 +2,7 @@
 import type { QTableProps } from 'quasar'
 
 const dialog = ref(false)
-const deliveries = useRequestTable(r => api.get('/deliveries/to-arrive', { params: r }).then(r => r.data), { arrivalDate: useToday(), isArrived: null as null | boolean })
+const deliveries = useRequestTable(r => api.get('/deliveries/to-arrive', { params: r }).then(r => r.data), { arrivalDate: useToday(), isArrived: null as null | boolean, search: null as string | null })
 const columns: QTableProps['columns'] = [
   {
     label: 'Reference Number',
@@ -10,6 +10,7 @@ const columns: QTableProps['columns'] = [
     name: 'referenceNumber',
     align: 'left',
     style: 'width: 120px',
+    sortable: true,
   },
   {
     label: 'Arrival Date',
@@ -18,31 +19,36 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     style: 'width: 120px',
     format: (value: string) => formatDate(value),
+    sortable: true,
   },
   {
     label: 'Recipient',
     field: 'recipientName',
     name: 'recipientName',
     align: 'left',
+    sortable: true,
   },
   {
     label: 'Contact Number',
     field: 'contactNumber',
     name: 'contactNumber',
     align: 'left',
+    sortable: true,
   },
   {
     label: 'Package Type',
     field: 'packageTypeName',
     name: 'packageTypeName',
     align: 'left',
+    sortable: true,
+
   },
   {
     label: 'Size',
     field: 'sizeTypeName',
     name: 'sizeTypeName',
     align: 'left',
-
+    sortable: true,
   },
   {
     label: 'Amount',
@@ -50,24 +56,28 @@ const columns: QTableProps['columns'] = [
     name: 'amount',
     align: 'left',
     format: (value: number) => formatAmount(value),
+    sortable: true,
   },
   {
     label: 'Tracking Number',
     field: 'trackingNumber',
     name: 'trackingNumber',
     align: 'left',
+    sortable: true,
   },
   {
     label: 'Address',
     field: 'address',
     name: 'address',
     align: 'left',
+    sortable: true,
   },
   {
     label: 'Status',
     field: 'status',
     name: 'status',
     align: 'center',
+    sortable: true,
   },
 ]
 onMounted(() => deliveries.submit())
@@ -85,6 +95,10 @@ watchDeep(deliveries.request, () => deliveries.submit())
             </p>
           </div>
           <div class="flex items-center gap-sm">
+            <q-input
+              v-model="deliveries.request.search" label="Search" class="w-96" hide-bottom-space dense
+              placeholder="Search by Ref. #, Recipient Name, Address, Tracking #"
+            />
             <q-btn label="Scan" icon-right="qr_code_scanner" color="primary" no-caps @click="dialog = true" />
           </div>
         </div>
@@ -117,6 +131,8 @@ watchDeep(deliveries.request, () => deliveries.submit())
           :rows="deliveries.response.rows"
           flat
           :columns="columns"
+          :filter="deliveries.request"
+          @request="r => deliveries.onRequest(r)"
         >
           <template #body-cell-status="props">
             <q-td :props="props">

@@ -16,6 +16,17 @@ public class Endpoint : Endpoint<DeliveryPagedReq, PagedRes<DeliveryRowRes>>
     public override async Task HandleAsync(DeliveryPagedReq req, CancellationToken ct)
     {
         var query = Db.Deliveries.AsQueryable();
+        if (req.Search is not null)
+        {
+            query = query.Where(d =>
+                d.Recipient.FirstName.Contains(req.Search)
+                || d.Recipient.MiddleName!.Contains(req.Search)
+                || d.Recipient.LastName.Contains(req.Search)
+                || d.Address.Contains(req.Search)
+                || d.ReferenceNumber.Contains(req.Search)
+                || d.TrackingNumber.Contains(req.Search)
+            );
+        }
         var cfg = new TypeAdapterConfig();
         cfg.NewConfig<Delivery, DeliveryRowRes>()
             .Map(

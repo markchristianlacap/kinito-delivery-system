@@ -16,4 +16,7 @@ public class DeliveryRowRes : DeliveryModel
     public string DeliveryStatusDesc => DeliveryStatus.Humanize(LetterCasing.Title);
 }
 
-public class DeliveryPagedReq : PagedReq { }
+public class DeliveryPagedReq : PagedReq
+{
+    public string? Search { get; set; } = null!;
+}

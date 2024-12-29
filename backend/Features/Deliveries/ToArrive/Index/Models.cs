@@ -19,6 +19,7 @@ public class DeliveryRowRes : DeliveryModel
 
 public class DeliveryPagedReq : PagedReq
 {
+    public string? Search { get; set; } = null!;
     public DateTime? ArrivalDate { get; set; }
     public bool? IsArrived { get; set; }
 }

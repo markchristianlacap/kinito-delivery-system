@@ -82,6 +82,7 @@ const columns: QTableProps['columns'] = [
   },
 ]
 onMounted(() => deliveries.submit())
+watchDeep(deliveries.request, () => deliveries.submit())
 </script>
 
 <template>
